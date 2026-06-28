@@ -15,7 +15,10 @@ describe("Shopee URL utilities", () => {
   });
 
   it("extracts and normalizes bare Shopee links without a scheme", () => {
-    expect(extractUrlsFromText("convert s.shopee.sg/abc123, thanks")).toEqual(["s.shopee.sg/abc123"]);
+    expect(extractUrlsFromText("convert s.shopee.sg/abc123 and sg.shp.ee/JpFzUVUM, thanks")).toEqual([
+      "s.shopee.sg/abc123",
+      "sg.shp.ee/JpFzUVUM"
+    ]);
 
     const result = validateShopeeUrl("s.shopee.sg/abc123");
     expect(isValidShopeeUrl(result)).toBe(true);
@@ -27,9 +30,11 @@ describe("Shopee URL utilities", () => {
   it("accepts Shopee Singapore and supported short domains", () => {
     const product = validateShopeeUrl("http://www.shopee.sg/product/1/2#reviews");
     const short = validateShopeeUrl("https://shope.ee/abc123");
+    const regionalShort = validateShopeeUrl("https://sg.shp.ee/JpFzUVUM");
 
     expect(isValidShopeeUrl(product)).toBe(true);
     expect(isValidShopeeUrl(short)).toBe(true);
+    expect(isValidShopeeUrl(regionalShort)).toBe(true);
     if (isValidShopeeUrl(product)) {
       expect(product.normalizedUrl).toBe("https://shopee.sg/product/1/2");
     }
@@ -45,6 +50,7 @@ describe("Shopee URL utilities", () => {
 
   it("identifies likely affiliate links", () => {
     expect(isLikelyAffiliateUrl("https://shope.ee/abc")).toBe(true);
+    expect(isLikelyAffiliateUrl("https://sg.shp.ee/JpFzUVUM")).toBe(true);
     expect(isLikelyAffiliateUrl("https://shopee.sg/product/1/2?utm_medium=affiliate")).toBe(true);
     expect(isLikelyAffiliateUrl("https://shopee.sg/product/1/2")).toBe(false);
   });

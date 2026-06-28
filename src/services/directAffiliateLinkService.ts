@@ -18,7 +18,7 @@ export interface DirectAffiliateHealth {
   shortLinkExpansion: boolean;
 }
 
-const SHORT_LINK_HOSTS = new Set(["s.shopee.sg", "shope.ee", "shp.ee"]);
+const SHORT_LINK_HOSTS = new Set(["s.shopee.sg", "shope.ee", "shp.ee", "sg.shp.ee"]);
 
 export class DirectAffiliateLinkService {
   public constructor(

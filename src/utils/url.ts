@@ -1,7 +1,7 @@
 const URL_PATTERN =
-  /https?:\/\/[^\s<>"'`]+|(?:www\.)?shopee\.sg\/[^\s<>"'`]+|s\.shopee\.sg\/[^\s<>"'`]+|shope\.ee\/[^\s<>"'`]+|shp\.ee\/[^\s<>"'`]+/gi;
+  /https?:\/\/[^\s<>"'`]+|(?:www\.)?shopee\.sg\/[^\s<>"'`]+|s\.shopee\.sg\/[^\s<>"'`]+|shope\.ee\/[^\s<>"'`]+|(?:sg\.)?shp\.ee\/[^\s<>"'`]+/gi;
 
-const ALLOWED_HOSTS = new Set(["shopee.sg", "www.shopee.sg", "s.shopee.sg", "shope.ee", "shp.ee"]);
+const ALLOWED_HOSTS = new Set(["shopee.sg", "www.shopee.sg", "s.shopee.sg", "shope.ee", "shp.ee", "sg.shp.ee"]);
 
 export interface NormalizedShopeeUrl {
   originalUrl: string;
@@ -96,7 +96,7 @@ export function isLikelyAffiliateUrl(candidate: string): boolean {
     const value = candidate.toLowerCase();
 
     return (
-      ["shope.ee", "s.shopee.sg", "shp.ee"].includes(hostname) ||
+      ["shope.ee", "s.shopee.sg", "shp.ee", "sg.shp.ee"].includes(hostname) ||
       value.includes("utm_medium=affiliate") ||
       value.includes("utm_source=an_") ||
       value.includes("af_siteid=") ||

@@ -47,10 +47,10 @@ describe("DirectAffiliateLinkService", () => {
       logger
     );
 
-    const result = await service.convertLink("https://s.shopee.sg/abc123");
+    const result = await service.convertLink("https://sg.shp.ee/JpFzUVUM");
     const generated = new URL(result.affiliateLink);
 
-    expect(fetch).toHaveBeenCalledWith("https://s.shopee.sg/abc123", {
+    expect(fetch).toHaveBeenCalledWith("https://sg.shp.ee/JpFzUVUM", {
       method: "HEAD",
       redirect: "follow"
     });
