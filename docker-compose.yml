@@ -1,0 +1,15 @@
+services:
+  shopeebee:
+    build: .
+    restart: unless-stopped
+    init: true
+    shm_size: "1gb"
+    env_file:
+      - .env
+    ports:
+      - "3000:3000"
+    volumes:
+      - shopeebee-data:/data
+
+volumes:
+  shopeebee-data:

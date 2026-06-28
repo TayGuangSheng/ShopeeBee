@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String           @id @default(cuid())
+  telegramId  String           @unique
+  username    String?
+  firstName   String?
+  lastName    String?
+  isAllowed   Boolean          @default(false)
+  isAdmin     Boolean          @default(false)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  conversions LinkConversion[]
+
+  @@index([isAllowed])
+  @@index([isAdmin])
+}
+
+model LinkConversion {
+  id                     String           @id @default(cuid())
+  userId                 String?
+  telegramUserId          String
+  originalLink            String
+  normalizedLink          String
+  generatedAffiliateLink  String?
+  status                 ConversionStatus @default(QUEUED)
+  errorCode              String?
+  errorMessage           String?
+  attempts               Int              @default(0)
+  durationMs             Int?
+  createdAt              DateTime         @default(now())
+  updatedAt              DateTime         @updatedAt
+  completedAt            DateTime?
+  user                   User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([telegramUserId, createdAt])
+  @@index([status])
+  @@index([createdAt])
+}
+
+enum ConversionStatus {
+  QUEUED
+  PROCESSING
+  SUCCESS
+  FAILED
+}
