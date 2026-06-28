@@ -59,7 +59,9 @@ async function main(): Promise<void> {
     bot
   });
 
-  await bot.telegram.deleteMyCommands();
+  await bot.telegram.deleteMyCommands().catch((error: unknown) => {
+    logger.warn({ error }, "Unable to clear Telegram command menu");
+  });
   await server.listen({ port: config.port, host: "0.0.0.0" });
 
   if (config.botMode === "webhook") {
