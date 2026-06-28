@@ -64,8 +64,15 @@ async function main(): Promise<void> {
 
   if (config.botMode === "webhook") {
     const webhookBaseUrl = config.publicWebhookUrl?.replace(/\/+$/u, "");
-    await bot.telegram.setWebhook(`${webhookBaseUrl}/telegram/webhook`);
-    logger.info({ port: config.port, webhookBaseUrl }, "ShopeeBee started in webhook mode");
+    if (webhookBaseUrl) {
+      await bot.telegram.setWebhook(`${webhookBaseUrl}/telegram/webhook`);
+      logger.info({ port: config.port, webhookBaseUrl }, "ShopeeBee started in webhook mode");
+    } else {
+      logger.warn(
+        { port: config.port },
+        "ShopeeBee started in webhook mode without PUBLIC_WEBHOOK_URL; set the webhook URL after deploy"
+      );
+    }
   } else {
     await bot.telegram.deleteWebhook();
     await bot.launch();

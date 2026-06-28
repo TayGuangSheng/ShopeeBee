@@ -49,15 +49,6 @@ const envSchema = z
     RATE_LIMIT_MAX: z.coerce.number().int().positive().default(10),
     QUEUE_CONCURRENCY: z.coerce.number().int().min(1).max(5).default(1),
     MAX_LINKS_PER_MESSAGE: z.coerce.number().int().min(1).max(10).default(5)
-  })
-  .superRefine((value, ctx) => {
-    if (value.BOT_MODE === "webhook" && !value.PUBLIC_WEBHOOK_URL && !value.RENDER_EXTERNAL_URL) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        path: ["PUBLIC_WEBHOOK_URL"],
-        message: "PUBLIC_WEBHOOK_URL or RENDER_EXTERNAL_URL is required when BOT_MODE=webhook"
-      });
-    }
   });
 
 export type BotMode = "polling" | "webhook";

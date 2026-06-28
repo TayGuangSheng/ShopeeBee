@@ -27,13 +27,14 @@ describe("env config", () => {
     expect(config.shopeeExpandShortLinks).toBe(false);
   });
 
-  it("requires a public webhook URL in webhook mode", () => {
-    expect(() =>
-      parseAppConfig({
-        TELEGRAM_BOT_TOKEN: "token",
-        BOT_MODE: "webhook"
-      })
-    ).toThrow(/PUBLIC_WEBHOOK_URL/u);
+  it("allows webhook mode before the public URL is configured", () => {
+    const config = parseAppConfig({
+      TELEGRAM_BOT_TOKEN: "token",
+      BOT_MODE: "webhook"
+    });
+
+    expect(config.botMode).toBe("webhook");
+    expect(config.publicWebhookUrl).toBeUndefined();
   });
 
   it("uses Render's external URL for webhook mode", () => {

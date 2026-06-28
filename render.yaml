@@ -5,8 +5,12 @@ services:
     plan: free
     healthCheckPath: /health
     envVars:
+      - key: PORT
+        value: 10000
       - key: BOT_MODE
         value: webhook
+      - key: PUBLIC_WEBHOOK_URL
+        sync: false
       - key: DATABASE_URL
         value: file:/data/shopeebee.db
       - key: TELEGRAM_BOT_TOKEN
